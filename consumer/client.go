@@ -36,6 +36,12 @@ func (c *client) Serve() {
 	executable_img := filepath.Join(filepath.Dir(os.Args[0]), "eventing-consumer")
 
 	c.cmd = exec.Command(
+		"/usr/local/bin/valgrind",
+		"--tool=memcheck",
+		"--leak-check=yes",
+		"--show-leak-kinds=all",
+		"--track-origins=yes",
+		"--log-file=/tmp/logs/eventing-consumer_memcheck_%p.out",
 		executable_img,
 		c.appName,
 		c.consumerHandle.ipcType,
